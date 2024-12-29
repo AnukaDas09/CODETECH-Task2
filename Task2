@@ -1,0 +1,131 @@
+/* MAIN.PY */
+
+from tkinter import Tk
+from gui import create_gui
+
+def main():
+    # Set up the Tkinter window
+    root = Tk()
+    root.title("Student Grade Tracker")
+    
+    # Create the GUI elements
+    create_gui(root)
+    
+    # Start the Tkinter event loop
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+
+
+/* GRADES_MANAGER.PY */
+
+class GradeManager:
+    def __init__(self):
+        self.grades = []
+
+    def add_grade(self, grade):
+        self.grades.append(grade)
+
+    def calculate_average(self):
+        if self.grades:
+            return sum(self.grades) / len(self.grades)
+        return 0
+
+    def calculate_letter_grade(self):
+        average = self.calculate_average()
+        if average >= 90:
+            return 'A'
+        elif average >= 80:
+            return 'B'
+        elif average >= 70:
+            return 'C'
+        elif average >= 60:
+            return 'D'
+        else:
+            return 'F'
+
+    def calculate_gpa(self):
+        average = self.calculate_average()
+        if average >= 90:
+            return 4.0
+        elif average >= 80:
+            return 3.0
+        elif average >= 70:
+            return 2.0
+        elif average >= 60:
+            return 1.0
+        else:
+            return 0.0
+
+
+/* GUI.PY */
+
+import tkinter as tk
+from tkinter import messagebox
+from grades_manager import GradeManager
+
+def create_gui(root):
+    grade_manager = GradeManager()
+
+    # Function to handle adding a grade
+    def add_grade():
+        try:
+            grade = float(grade_entry.get())
+            if grade < 0 or grade > 100:
+                raise ValueError("Grade should be between 0 and 100.")
+            grade_manager.add_grade(grade)
+            grade_entry.delete(0, tk.END)
+            grades_listbox.insert(tk.END, f"Grade: {grade:.2f}")
+            messagebox.showinfo("Grade Added", f"Grade {grade} added successfully!")
+        except ValueError:
+            messagebox.showerror("Invalid Input", "Please enter a valid grade between 0 and 100.")
+
+    # Function to calculate and display the average, letter grade, and GPA
+    def calculate_results():
+        if not grade_manager.grades:
+            messagebox.showwarning("No Grades", "No grades added yet. Please add grades to calculate results.")
+            return
+        # Retrieve calculations
+        average = grade_manager.calculate_average()
+        letter_grade = grade_manager.calculate_letter_grade()
+        gpa = grade_manager.calculate_gpa()
+
+        # Update results on the GUI
+        results_text.set(f"Average: {average:.2f}\nLetter Grade: {letter_grade}\nGPA: {gpa:.2f}")
+
+    # Function to clear all grades
+    def clear_grades():
+        grade_manager.grades.clear()
+        grades_listbox.delete(0, tk.END)
+        results_text.set("Average: 0.00\nLetter Grade: F\nGPA: 0.0")
+        messagebox.showinfo("Grades Cleared", "All grades have been cleared.")
+
+    # Set up GUI components
+    root.geometry("400x500")
+    root.configure(bg="#f0f8ff")
+
+    # Title
+    tk.Label(root, text="Student Grade Tracker", font=("Helvetica", 16, "bold"), bg="#f0f8ff").pack(pady=10)
+
+    # Input Section
+    tk.Label(root, text="Enter Grade (0-100):", font=("Helvetica", 12), bg="#f0f8ff").pack(pady=5)
+    grade_entry = tk.Entry(root, font=("Helvetica", 12))
+    grade_entry.pack(pady=5)
+
+    # Add Grade Button
+    tk.Button(root, text="Add Grade", font=("Helvetica", 12), bg="#4caf50", fg="white", command=add_grade).pack(pady=10)
+
+    # Grades Listbox
+    tk.Label(root, text="Grades List:", font=("Helvetica", 12), bg="#f0f8ff").pack(pady=5)
+    grades_listbox = tk.Listbox(root, height=8, font=("Helvetica", 12), bg="#e8f4f8")
+    grades_listbox.pack(pady=5)
+
+    # Action Buttons
+    tk.Button(root, text="Calculate Results", font=("Helvetica", 12), bg="#2196f3", fg="white", command=calculate_results).pack(pady=10)
+    tk.Button(root, text="Clear Grades", font=("Helvetica", 12), bg="#f44336", fg="white", command=clear_grades).pack(pady=5)
+
+    # Results Display
+    results_text = tk.StringVar()
+    results_text.set("Average: 0.00\nLetter Grade: F\nGPA: 0.0")
+    tk.Label(root, textvariable=results_text, font=("Helvetica", 12), bg="#f0f8ff", fg="#333").pack(pady=20)
