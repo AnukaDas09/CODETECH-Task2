@@ -66,5 +66,3 @@ The objective of this project is to develop a Python application for tracking an
 This project demonstrates effective use of Python for developing an interactive application that simplifies grade management for students or educators. It combines user-friendly design and robust backend logic to provide accurate calculations and seamless user experience.
 
 --- 
-
-Let me know if you need any modifications!
