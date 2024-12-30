@@ -8,8 +8,8 @@
 
 ---
 
-## **![WhatsApp Image 2024-12-30 at 21 18 47_1e994414](https://github.com/user-attachments/assets/c499f6e8-8f13-4f34-820e-f09526df00b3)
-Overview of the Project**
+## ![WhatsApp Image 2024-12-30 at 21 18 47_1e994414](https://github.com/user-attachments/assets/c499f6e8-8f13-4f34-820e-f09526df00b3)
+**Overview of the Project**
 
 ### **Project:** Student Grade Tracker  
 
